@@ -8,4 +8,9 @@ contract MurokCoin {
   /* matt note: this is basically a hash table, or like a key-value object in JS */
   /* the key is address, the value is an integer representing a balance */
   mapping (address => uint256) public balanceOf;
+
+  function MurokCoin() {
+  /* this function runs once when a contract is uploaded to the network */
+    balanceOf[msg.sender] = 21000000;
+  }
 }
