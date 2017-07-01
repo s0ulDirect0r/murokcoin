@@ -9,8 +9,8 @@ contract MurokCoin {
   /* the key is address, the value is an integer representing a balance */
   mapping (address => uint256) public balanceOf;
 
-  function MurokCoin() {
+  function MurokCoin(uint256 initialSupply) {
   /* this function runs once when a contract is uploaded to the network */
-    balanceOf[msg.sender] = 21000000;
+    balanceOf[msg.sender] = initialSupply;
   }
 }
