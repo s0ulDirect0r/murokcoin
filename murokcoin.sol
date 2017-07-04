@@ -4,12 +4,12 @@
 pragma solidity ^0.4.8;
 
 contract MurokCoin {
+  event Transfer(address indexed from, address indexed to, uint256 value);  
+
   /* Public variables of the token */
   string public name;
   string public symbol;
   uint8 public decimals;
-
-
 
   /* Creating an array with all balances, all of which are publicly accessible on the blockchain */
   /* matt note: this is basically a hash table, or like a key-value object in JS */
@@ -32,5 +32,8 @@ contract MurokCoin {
     /* Add and subtract new balances */
     balanceOf[msg.sender] -= _value;
     balanceOf[_to] += _value;
+
+    /* Notify anyone listening that this transfer took place */
+    Transfer(msg.sender, _to, _value);
   }
 }
