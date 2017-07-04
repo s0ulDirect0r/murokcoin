@@ -4,14 +4,24 @@
 pragma solidity ^0.4.8;
 
 contract MurokCoin {
+  /* Public variables of the token */
+  string public name;
+  string public symbol;
+  uint8 public decimals;
+
+
+
   /* Creating an array with all balances, all of which are publicly accessible on the blockchain */
   /* matt note: this is basically a hash table, or like a key-value object in JS */
   /* the key is address, the value is an integer representing a balance */
   mapping (address => uint256) public balanceOf;
 
-  function MurokCoin(uint256 initialSupply) {
+  function MurokCoin(uint256 initialSupply, string tokenName, string tokenSymbol, uint8 decimalUnits) {
   /* this function runs once when a contract is uploaded to the network */
-    balanceOf[msg.sender] = initialSupply;
+    balanceOf[msg.sender] = initialSupply; // Give the creator all initial tokens
+    name = tokenName; // Set the name for display purposes
+    symbol = tokenSymbol; // Set the symbol for display purposes
+    decimals = decimalUnits; // Amount of decimals for display purposes
   }
 
   /* Send coins */
