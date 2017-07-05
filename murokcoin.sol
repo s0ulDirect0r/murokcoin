@@ -3,8 +3,27 @@
 /* more details: pragmas are a form of directive, like #define in C */
 pragma solidity ^0.4.8;
 
-contract MurokCoin {
-  event Transfer(address indexed from, address indexed to, uint256 value);  
+contract owned {
+  address public owner;
+
+  function owned() {
+    owner = msg.sender;
+  }
+
+  modifier onlyOwner {
+    if (msg.sender != owner) throw;
+    _;
+  }
+
+  function transferOwnership(address newOwner) onlyOwner {
+    owner = newOwner;
+  }
+}
+
+contract MurokCoin is owned {
+  /* An event allows us to use the EVM logging systems to store arguments in the transaction's logs
+  */
+  event Transfer(address indexed from, address indexed to, uint256 value);
 
   /* Public variables of the token */
   string public name;
@@ -16,8 +35,15 @@ contract MurokCoin {
   /* the key is address, the value is an integer representing a balance */
   mapping (address => uint256) public balanceOf;
 
-  function MurokCoin(uint256 initialSupply, string tokenName, string tokenSymbol, uint8 decimalUnits) {
+  function MurokCoin(
+    uint256 initialSupply,
+    string tokenName,
+    string tokenSymbol,
+    uint8 decimalUnits,
+    address centralMinter
+    ) {
   /* this function runs once when a contract is uploaded to the network */
+    if(centralMinter != 0 ) owner = centralMinter;
     balanceOf[msg.sender] = initialSupply; // Give the creator all initial tokens
     name = tokenName; // Set the name for display purposes
     symbol = tokenSymbol; // Set the symbol for display purposes
