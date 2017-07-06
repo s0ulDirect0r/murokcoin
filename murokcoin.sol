@@ -10,6 +10,7 @@ contract owned {
     owner = msg.sender;
   }
 
+  /* checks if modified function is being sent run by owner */
   modifier onlyOwner {
     if (msg.sender != owner) throw;
     _;
@@ -61,5 +62,10 @@ contract MurokCoin is owned {
 
     /* Notify anyone listening that this transfer took place */
     Transfer(msg.sender, _to, _value);
+  }
+
+  /* Reward ether miners with MurokCoins */
+  function giveBlockReward() {
+      balanceOf[block.coinbase] += 1;
   }
 }
