@@ -30,6 +30,9 @@ contract MurokCoin is owned {
   string public name;
   string public symbol;
   uint8 public decimals;
+  bytes32 public currentChallenge;
+  uint public timeOfLastProof;
+  uint public difficulty = 10**32;
 
   /* Creating an array with all balances, all of which are publicly accessible on the blockchain */
   /* matt note: this is basically a hash table, or like a key-value object in JS */
@@ -49,6 +52,7 @@ contract MurokCoin is owned {
     name = tokenName; // Set the name for display purposes
     symbol = tokenSymbol; // Set the symbol for display purposes
     decimals = decimalUnits; // Amount of decimals for display purposes
+    timeOfLastProof = now;
   }
 
   /* Send coins */
@@ -67,5 +71,20 @@ contract MurokCoin is owned {
   /* Reward ether miners with MurokCoins */
   function giveBlockReward() {
       balanceOf[block.coinbase] += 1;
+  }
+
+  /* TO DO: GO BACK AND READ OVER THIS TO UNDERSTAND EVERY WORD */
+  function proofOfWork(uint nonce) {
+      bytes8 n = bytes8(sha3(nonce, currentChallenge)); Generate a random hash based on input
+      if (n < bytes8(difficulty)) throw;
+
+      uint timeSinceLastProof = (now - timeOfLastProof); // Calculate time since last reward was given
+      if (timeSinceLastProof < 5 seconds) throw; // Rewards cannot be given too quickly
+      balanceOf[msg.sender] += timeSinceLastProof / 60 seconds; // The reward to the winner grows by the minute
+
+      difficulty = difficulty * 10 minutes / timeSinceLastProof + 1; // Adjusts the difficulty
+
+      timeOfLastProof = now;
+      currentChallenge = sha3(nonce, currentChallenge, block.blockhash(block.number-1)); // save a hash that will be used as the next proof
   }
 }
