@@ -75,6 +75,7 @@ contract MurokCoin is owned {
 
   /* TO DO: GO BACK AND READ OVER THIS TO UNDERSTAND EVERY WORD */
   function proofOfWork(uint nonce) {
+      // sha3 is a function for generating hashes
       bytes8 n = bytes8(sha3(nonce, currentChallenge)); Generate a random hash based on input
       if (n < bytes8(difficulty)) throw;
 
