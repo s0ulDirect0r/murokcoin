@@ -30,13 +30,11 @@ contract MurokCoin is owned {
   string public name;
   string public symbol;
   uint8 public decimals;
-  bytes32 public currentChallenge;
-  uint public timeOfLastProof;
-  uint public difficulty = 10**32;
+  bytes32 public currentChallenge; // The coin starts with a challenge
+  uint public timeOfLastProof; // Variable to keep track of when rewards were given
+  uint public difficulty = 10**32; // Difficulty starts reasonably low
 
   /* Creating an array with all balances, all of which are publicly accessible on the blockchain */
-  /* matt note: this is basically a hash table, or like a key-value object in JS */
-  /* the key is address, the value is an integer representing a balance */
   mapping (address => uint256) public balanceOf;
 
   function MurokCoin(
@@ -73,9 +71,7 @@ contract MurokCoin is owned {
       balanceOf[block.coinbase] += 1;
   }
 
-  /* TO DO: GO BACK AND READ OVER THIS TO UNDERSTAND EVERY WORD */
   function proofOfWork(uint nonce) {
-      // sha3 is a function for generating hashes
       bytes8 n = bytes8(sha3(nonce, currentChallenge)); Generate a random hash based on input
       if (n < bytes8(difficulty)) throw;
 
