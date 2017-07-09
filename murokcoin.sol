@@ -72,7 +72,7 @@ contract MurokCoin is owned {
   }
 
   function proofOfWork(uint nonce) {
-      bytes8 n = bytes8(sha3(nonce, currentChallenge)); Generate a random hash based on input
+      bytes8 n = bytes8(sha3(nonce, currentChallenge)); // Generate a random hash based on input
       if (n < bytes8(difficulty)) throw;
 
       uint timeSinceLastProof = (now - timeOfLastProof); // Calculate time since last reward was given
